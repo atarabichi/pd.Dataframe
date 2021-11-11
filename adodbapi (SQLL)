@@ -1,0 +1,26 @@
+# ensure latest version of MSQL is updated and drivers/ID to boot to match
+
+import ( 
+    "database/sql"
+    "fmt"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+// Connect to the database
+conn, err := sql.Open("mysql", "UserName:Password@tcp(HostName:PortNum)/DatabaseName")
+defer conn.Close()
+if err != nil {
+    fmt.Println(err)
+    return
+}
+
+// SQL query execution
+statement, _ := conn.Prepare(`
+    SELECT Name
+    FROM country`)
+
+// Get the data
+result := statement.QueryRow()
+var name string
+result.Scan(&amp;name)
+fmt.Println(name)
